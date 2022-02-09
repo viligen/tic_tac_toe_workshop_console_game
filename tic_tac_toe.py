@@ -53,7 +53,7 @@ def is_valid_choice(board_,board_mapper_, choice):
 
 def is_win_rows(board_):
     for row in board_:
-        if len(set(row)) == 1:
+        if len(set(row)) == 1 and set(row) != {None}:
             return True
     return False
 
@@ -77,8 +77,9 @@ def is_win_columns(board_, current_player_):
 
 
 def is_draw(board_):
-    if len([[s for s in board_[r] if s] for r in range(len(board_))]) > 0:
-        return False
+    for row_ in board_:
+        if len([s for s in row_ if s]) < len(row_):
+            return False
     return True
 
 
