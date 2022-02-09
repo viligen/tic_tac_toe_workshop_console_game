@@ -30,20 +30,20 @@ def print_num_state():
 
 def board_init_state(size_):
     board_ = []
-    for row in range(size_):
+    for _ in range(size_):
         board_.append([None] * size)
     return board_
 
 
 def print_current_board(board_):
-    for row in board_:
+    for row_ in board_:
         print('|  ', end='')
-        print('  |  '.join([s if s else ' ' for s in row]), end='')
+        print('  |  '.join([s if s else ' ' for s in row_]), end='')
         print('  |')
     return board_
 
 
-def is_valid_choice(board_,board_mapper_, choice):
+def is_valid_choice(board_, board_mapper_, choice):
     if choice < 1 or choice > 9:
         return False
     elif board_[board_mapper_[choice][0]][board_mapper_[choice][1]]:
@@ -52,8 +52,8 @@ def is_valid_choice(board_,board_mapper_, choice):
 
 
 def is_win_rows(board_):
-    for row in board_:
-        if len(set(row)) == 1 and set(row) != {None}:
+    for row_ in board_:
+        if len(set(row_)) == 1 and set(row_) != {None}:
             return True
     return False
 
@@ -78,7 +78,7 @@ def is_win_columns(board_, current_player_):
 
 def is_draw(board_):
     for row_ in board_:
-        if len([s for s in row_ if s]) < len(row_):
+        if None in row_:
             return False
     return True
 
@@ -94,7 +94,6 @@ print(f"{first_player.name} starts first!")
 
 board = board_init_state(size)
 turn = 1
-
 
 while True:
     current_player = first_player if turn % 2 != 0 else second_player
