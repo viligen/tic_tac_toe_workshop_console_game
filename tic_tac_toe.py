@@ -51,6 +51,37 @@ def is_valid_choice(board_,board_mapper_, choice):
     return True
 
 
+def is_win_rows(board_):
+    for row in board_:
+        if len(set(row)) == 1:
+            return True
+    return False
+
+
+def is_win_diagonals(board_, current_player_):
+    diagonal_1, diagonal_2 = [], []
+    for idx in range(len(board_)):
+        diagonal_1.append(board_[idx][idx] == current_player_.sign)
+        diagonal_2.append(board[idx][len(board_) - 1 - idx] == current_player_.sign)
+    return all(diagonal_1) or all(diagonal_2)
+
+
+def is_win_columns(board_, current_player_):
+    for col in range(len(board_)):
+        current_column = []
+        for row in range(len(board_)):
+            current_column.append(board_[row][col] == current_player_.sign)
+        if all(current_column):
+            return True
+    return False
+
+
+def is_draw(board_):
+    if len([[s for s in board_[r] if s] for r in range(len(board_))]) > 0:
+        return False
+    return True
+
+
 board_mapper = {1: [0, 0], 2: [0, 1], 3: [0, 2],
                 4: [1, 0], 5: [1, 1], 6: [1, 2],
                 7: [2, 0], 8: [2, 1], 9: [2, 2]}
@@ -63,6 +94,7 @@ print(f"{first_player.name} starts first!")
 board = board_init_state(size)
 turn = 1
 
+
 while True:
     current_player = first_player if turn % 2 != 0 else second_player
     while True:
@@ -72,8 +104,10 @@ while True:
     row, col = board_mapper[current_choice]
     board[row][col] = current_player.sign
     print_current_board(board)
-    if is_win(board, current_player):
+    if any([is_win_rows(board), is_win_columns(board, current_player), is_win_diagonals(board, current_player)]):
+        print(f"{current_player.name} won!")
         break
     if is_draw(board):
+        print('draw!')
         break
     turn += 1
